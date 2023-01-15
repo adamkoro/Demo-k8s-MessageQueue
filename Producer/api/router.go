@@ -8,6 +8,7 @@ func ApiV1() *gin.Engine {
 	v1 := router.Group("/api/v1")
 	{
 		v1.GET("/ping", Ping)
+		v1.GET("/health", Health)
 	}
 	return router
 }
