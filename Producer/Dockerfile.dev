@@ -1,7 +1,5 @@
-// Create hot-reloadable Golang image
+# Create hot-reloadable Golang image
 FROM harbor.adamkoro.com/bci/golang:1.19
 WORKDIR /go/src/app
-COPY --from=0 /go/src/app .
-RUN go get -u github.com/cosmtrek/air
-CMD ["air"]
-
+COPY . .
+RUN go install github.com/cespare/reflex@latest && go mod download
