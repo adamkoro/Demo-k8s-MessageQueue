@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  # Memcached container
+  memcached:
+    image: harbor.adamkoro.com/dockerproxy/library/memcached:1.5.20
+    ports:
+      - "11211:11211"
+    networks:
+      - producer_dev
+  # Build container from Dockerfile, set dockerfile to Dockerfile.dev
+  producer:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: /go/bin/reflex -r "\.go$$" -s -- sh -c "go run ./"
+    image: harbor.adamkoro.com/demo-k8s/mq-producer:dev
+    volumes:
+      - ./:/go/src/app
+    ports:
+      - "8080:8080"
+    networks:
+      - producer_dev
+# New dev network
+networks:
+  producer_dev:
